@@ -3,7 +3,8 @@
   <Version>0</Version>
   <UpdateUrl />
   <Lives>
-    <Live Name="東方ch" ChannelId="ch2631252" />
+    <Live Name="01 VOCALOIDチャンネル" ChannelId="ch2633992" />
+    <Live Name="02 東方チャンネル" ChannelId="ch2631252" />
     <Live Name="グリテックチャンネル" ChannelId="ch2632306" />
   </Lives>
 </NecoSenPluginLiveInfos>
