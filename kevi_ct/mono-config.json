@@ -9,7 +9,27 @@
     },
     {
       "behavior": "assembly",
+      "name": "Avalonia.Browser.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Controls.ColorPicker.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Controls.DataGrid.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Avalonia.Controls.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Controls.ItemsRepeater.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Dialogs.dll"
     },
     {
       "behavior": "assembly",
@@ -22,6 +42,10 @@
     {
       "behavior": "assembly",
       "name": "Avalonia.Markup.Xaml.Loader.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "Avalonia.Metal.dll"
     },
     {
       "behavior": "assembly",
@@ -70,6 +94,10 @@
     {
       "behavior": "assembly",
       "name": "KyoshinMonitorLib.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "LibTessDotNet.dll"
     },
     {
       "behavior": "assembly",
@@ -202,6 +230,10 @@
     {
       "behavior": "assembly",
       "name": "System.Text.RegularExpressions.dll"
+    },
+    {
+      "behavior": "assembly",
+      "name": "System.Threading.Tasks.Parallel.dll"
     },
     {
       "behavior": "assembly",
