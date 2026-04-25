@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>GL Map Render Experimental — Web Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+      :root { color-scheme: dark; }
+      html, body {
+        margin: 0; padding: 0; width: 100%; height: 100%;
+        background: #1e1e1e; color: #ccc; overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      /* winit が with_inner_size で inline style を canvas に書くため !important で打ち消す */
+      #glmap-canvas {
+        display: block !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        touch-action: none;          /* タッチパン/ピンチを Web 既定動作から奪う */
+        outline: none;
+      }
+      #loading {
+        position: fixed; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: #1e1e1e; color: #aaa; font-size: 18px;
+        transition: opacity 0.3s;
+      }
+      #loading.hidden { opacity: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <canvas id="glmap-canvas" tabindex="0"></canvas>
+    <div id="loading">Loading WASM (~10 MB)…</div>
+    <script type="module">
+      import init, { on_canvas_resize } from "./glmap_host_web.js";
+      try {
+        await init();
+        document.getElementById("loading").classList.add("hidden");
+
+        // winit はデフォルトで canvas を観測しないため、JS 側で ResizeObserver を立てる。
+        // 表示サイズ (CSS layout) 変化を検出 → 物理 px (×DPR) を Rust に渡す。
+        // Rust 側で canvas.width/height (= GL framebuffer) を更新し、wgpu surface を再 configure。
+        const canvas = document.getElementById("glmap-canvas");
+        const notify = () => {
+          const dpr = window.devicePixelRatio || 1;
+          const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+          const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+          on_canvas_resize(w, h);
+        };
+        const ro = new ResizeObserver(notify);
+        ro.observe(canvas);
+        // devicePixelRatio 変化 (モニタ間移動 / OS ズーム変更) も拾う
+        let mql = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+        const dprListener = () => {
+          notify();
+          mql = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+          mql.addEventListener("change", dprListener, { once: true });
+        };
+        mql.addEventListener("change", dprListener, { once: true });
+      } catch (e) {
+        console.error(e);
+        document.getElementById("loading").textContent = "起動に失敗しました: " + e;
+      }
+    </script>
+  </body>
+</html>
